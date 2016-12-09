@@ -55,7 +55,7 @@ public class Players implements Parcelable {
         }
     };
 
-    public float bets (float preFlop, float flop, float turn, float river) {
+    public float bets () {
         float bets = preFlop + flop + turn + river;
         return bets;
     }

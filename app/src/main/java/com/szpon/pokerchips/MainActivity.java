@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -85,20 +86,29 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, ADD_PLAYER_CODE);
     }
 
-  /*  public void finish(View view) {
+    public void finish(View view) {
         //  startActivity(new Intent(MainActivity.this, Pop.class));
-        kopialisty = new ArrayList<>(myAdapter.lista2checked);
-        String pot;
-        float fpot=0;
-        float fPotSum=0;
-        for (int i=0; i<myAdapter.lista2.size(); i++) {
-            pot = myAdapter.lista2.get(i).getName2();
-            fpot = Float.parseFloat(pot);
-            pot = myAdapter.lista2.get(i).getName3();
-            fpot = fpot + Float.parseFloat(pot);
-            fPotSum = fPotSum + fpot;
+        kopialisty = new ArrayList<>(myAdapter.mPlayersListChecked);
+        float fpot = 0;
+
+        for (int i = 0; i < myAdapter.mPlayersList.size(); i++) {
+            fpot = fpot + myAdapter.mPlayersList.get(i).bets();
         }
-*/
+
+        if (kopialisty.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Please select winners", Toast.LENGTH_SHORT).show();
+        } else {
+
+            Intent i = new Intent(this, PopWinners.class);
+            i.putParcelableArrayListExtra("extra", kopialisty);
+            i.putExtra("pot",fpot);
+            startActivityForResult(i, WINNERS_CODE);
+
+        }
+
+}
+
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 

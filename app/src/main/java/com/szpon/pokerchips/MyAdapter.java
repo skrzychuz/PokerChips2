@@ -216,34 +216,41 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         public void onTextChanged(CharSequence s, int i, int i2, int i3) {
 
             String text = s.toString();
-            Float in = Float.parseFloat(text);
+
             switch (view.getId()) {
                 case R.id.preflopID:
                     if (text.isEmpty())
-                        mPlayersList.get(position).setPreFlop((float) 0.0);
-                    else
+                        mPlayersList.get(position).setPreFlop(0.0f);
+                    else {
+                        Float in = Float.parseFloat(text);
                         mPlayersList.get(position).setPreFlop(in);
-
+                    }
                     break;
                 case R.id.flopID:
                     if (text.isEmpty())
-                        mPlayersList.get(position).setFlop((float) 0.0);
+                        mPlayersList.get(position).setFlop(0.0f);
                     else
+                    {
+                        Float in = Float.parseFloat(text);
                         mPlayersList.get(position).setFlop(in);
+                    }
                     break;
                 case R.id.turnID:
                     if (text.isEmpty())
-                        mPlayersList.get(position).setTurn((float) 0.0);
-                    else
+                        mPlayersList.get(position).setTurn(0.0f);
+                    else {
+                        Float in = Float.parseFloat(text);
                         mPlayersList.get(position).setTurn(in);
-
-                break;
+                    }
+                    break;
                 
                 case R.id.riverID:
                     if (text.isEmpty())
                         mPlayersList.get(position).setRiver((float) 0.0);
-                    else
+                    else {
+                        Float in = Float.parseFloat(text);
                         mPlayersList.get(position).setRiver(in);
+                    }
                     break;
             }
         }

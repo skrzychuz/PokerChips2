@@ -7,9 +7,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    card_view:cardBackgroundColor="#faf7f7"
+    card_view:cardBackgroundColor="#FFFFFFFF"
     card_view:cardCornerRadius="5dp"
-    card_view:cardElevation="5dp">
+    card_view:cardElevation="5dp"
+    >
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -32,6 +33,7 @@
             android:textAlignment="center"
             android:textSize="20dp" />
         <EditText
+            android:imeOptions="flagNoExtractUi"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:id="@+id/preflopID"
@@ -40,6 +42,8 @@
             android:textAlignment="center"
             android:textSize="20dp" />
         <EditText
+
+            android:imeOptions="flagNoExtractUi"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:id="@+id/flopID"
@@ -48,6 +52,7 @@
             android:textAlignment="center"
             android:textSize="20dp" />
         <EditText
+            android:imeOptions="flagNoExtractUi"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:id="@+id/turnID"
@@ -56,6 +61,7 @@
             android:textAlignment="center"
             android:textSize="20dp" />
         <EditText
+            android:imeOptions="flagNoExtractUi"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:id="@+id/riverID"

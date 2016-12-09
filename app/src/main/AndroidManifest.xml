@@ -16,14 +16,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddPlayer"/>
-        <!--   <activity android:name=".Pop"
-              android:theme="@style/AppTheme.CustomTheme"/>
-          <activity android:name=".PopupExit"
-              android:theme="@style/AppTheme.CustomTheme"/> */
+           <activity android:name=".PopWinners"/>
+        <!--    android:theme="@style/AppTheme.CustomTheme"/>
+       <activity android:name=".PopupExit"
+           android:theme="@style/AppTheme.CustomTheme"/> */
 
 
-          ATTENTION: This was auto-generated to add Google Play services to your project for
-       App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+       ATTENTION: This was auto-generated to add Google Play services to your project for
+    App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
