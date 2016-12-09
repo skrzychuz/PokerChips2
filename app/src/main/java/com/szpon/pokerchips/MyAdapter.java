@@ -60,7 +60,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         holder.turn.setText(turn);
 
         holder.myCustomEditTextListenert4.updatePosition(holder.getAdapterPosition());
-        String river = Float.toString(mPlayersList.get(holder.getAdapterPosition()).getPreFlop());
+        String river = Float.toString(mPlayersList.get(holder.getAdapterPosition()).getRiver());
         holder.river.setText(river);
 
 
@@ -170,7 +170,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             preFlop.addTextChangedListener(this.myCustomEditTextListenert1);
 
             flop = (EditText) itemView.findViewById(R.id.flopID);
-            myCustomEditTextListenert3 = new MyCustomEditTextListener(flop);
+            myCustomEditTextListenert2 = new MyCustomEditTextListener(flop);
             this.flop.addTextChangedListener(this.myCustomEditTextListenert2);
 
             turn = (EditText) itemView.findViewById(R.id.turnID);
@@ -178,7 +178,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             this.turn.addTextChangedListener(this.myCustomEditTextListenert3);
 
             river = (EditText) itemView.findViewById(R.id.riverID);
-            myCustomEditTextListenert3 = new MyCustomEditTextListener(river);
+            myCustomEditTextListenert4 = new MyCustomEditTextListener(river);
             this.river.addTextChangedListener(this.myCustomEditTextListenert4);
 
         }

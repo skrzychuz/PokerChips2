@@ -21,11 +21,11 @@ public class AddPlayer extends Activity {
     public void funkcjadodaj (View view) {
         Intent intent = getIntent();
 
-        EditText edtTime = (EditText) findViewById(R.id.add_name_ID);
-        intent.putExtra("name", edtTime.getText().toString());
+        EditText name = (EditText) findViewById(R.id.add_name_ID);
+        intent.putExtra("name", name.getText().toString());
 
-        EditText edtNotes = (EditText) findViewById(R.id.add_stack_ID);
-        intent.putExtra("stack", edtNotes.getText().toString());
+        EditText stack = (EditText) findViewById(R.id.add_stack_ID);
+        intent.putExtra("stack", stack.getText().toString());
 
         setResult(RESULT_OK, intent);
 

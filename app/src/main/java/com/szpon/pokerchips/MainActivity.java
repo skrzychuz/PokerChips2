@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             case ADD_PLAYER_CODE:
                 if (resultCode == RESULT_OK) {
                     String name = data.getStringExtra("name");
-                    float stack = data.getFloatExtra("stack", 0.0f);
+                    Float stack = Float.parseFloat(data.getStringExtra("stack"));
                     Players item = new Players(name, stack ,0, false);
                     PlayersList.add(item);
                     myAdapter.notifyItemInserted(PlayersList.indexOf(item));
