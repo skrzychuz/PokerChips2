@@ -1,5 +1,6 @@
 package com.szpon.pokerchips;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -17,13 +18,19 @@ import java.util.ArrayList;
 
 /**
  * Created by KS on 2016-12-09.
+ *
+ *
  */
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
 
     public ArrayList<Players> mPlayersList;
     public ArrayList<Players> mPlayersListChecked = new ArrayList<>();
     private LayoutInflater MyInflater;
     private Context contex;
+    Activity activity;
+   // TextView pot = (TextView)findViewById(R.id.MainPotID);
+
 
     public MyAdapter(ArrayList<Players> playerslist, Context c) {
         this.MyInflater = LayoutInflater.from(c);
@@ -216,6 +223,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         public void onTextChanged(CharSequence s, int i, int i2, int i3) {
 
             String text = s.toString();
+            mPlayersList.get(position).setStack();
 
             switch (view.getId()) {
                 case R.id.preflopID:
@@ -225,6 +233,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                         Float in = Float.parseFloat(text);
                         mPlayersList.get(position).setPreFlop(in);
                     }
+
                     break;
                 case R.id.flopID:
                     if (text.isEmpty())
@@ -253,11 +262,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                     }
                     break;
             }
+            mPlayersList.get(position).setStack();
+
+
+
         }
 
 
         @Override
         public void afterTextChanged(Editable e) {
+
+           // ((MainActivity ) activity).updatePOT("asdf");
 
           /*  String string2 = lista2.get(position).getName2();
             float fstring2 = Float.parseFloat(string2);

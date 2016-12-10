@@ -46,14 +46,9 @@ public class PopWinners extends AppCompatActivity {
 
 
         winnersRecycler = (RecyclerView) findViewById(R.id.recyclerwinner);
-        // w celach optymalizacji
         winnersRecycler.setHasFixedSize(true);
-
-        // ustawiamy LayoutManagera
         winnersRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-
-        // tworzymy adapter oraz łączymy go z RecyclerView
         winnersAdapter = new AdapterForWinners(test2, this);
         winnersRecycler.setAdapter(winnersAdapter);
     }
@@ -64,6 +59,7 @@ public class PopWinners extends AppCompatActivity {
         Intent intent = getIntent();
         intent.putExtra("backPOP", test2);
         setResult(RESULT_OK, intent);
+        test2.clear();
         finish();
     }
 

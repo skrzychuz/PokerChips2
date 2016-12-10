@@ -11,15 +11,16 @@ public class Players implements Parcelable {
     private int ID;
     static int uniqID = 0;
     private String name;
+    private float buyin;
     private float stack;
     private float stackHelper;
     private float preFlop, flop, turn, river;
     private float wins;
     private boolean isSelected;
 
-    public Players(String name, float stack, float stackHelper, boolean isSelected) {
+    public Players(String name, float buyin, float stackHelper, boolean isSelected) {
         this.name = name;
-        this.stack = stack;
+        this.buyin = buyin;
         this.stackHelper = stackHelper;
         this.isSelected = isSelected;
         this.wins = 0;
@@ -33,6 +34,7 @@ public class Players implements Parcelable {
     protected Players(Parcel in) {
         ID = in.readInt();
         name = in.readString();
+        buyin = in.readFloat();
         stack = in.readFloat();
         stackHelper = in.readFloat();
         preFlop = in.readFloat();
@@ -55,11 +57,23 @@ public class Players implements Parcelable {
         }
     };
 
+    public void clean () {
+        setPreFlop(0);
+        setFlop(0);
+        setTurn(0);
+        setRiver(0);
+        setWins(0);
+        setSelected(false);
+
+    }
+
+
     public float bets () {
         float bets = preFlop + flop + turn + river;
         return bets;
     }
     public void reBuys (float rebuy) {
+
         this.stack = this.stack + rebuy;
     }
 
@@ -83,8 +97,8 @@ public class Players implements Parcelable {
         return stack;
     }
 
-    public void setStack(float stack) {
-        this.stack = stack;
+    public void setStack() {
+       this.stack = this.buyin - this.bets() + getWins();
     }
 
     public float getStackHelper() {
@@ -150,16 +164,16 @@ public class Players implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(ID);
+        dest.writeString(name);
+        dest.writeFloat(buyin);
+        dest.writeFloat(stack);
+        dest.writeFloat(stackHelper);
         dest.writeFloat(preFlop);
         dest.writeFloat(flop);
         dest.writeFloat(turn);
         dest.writeFloat(river);
         dest.writeFloat(wins);
         dest.writeInt(isSelected ? 1 : 0);
-        dest.writeInt(ID);
-        dest.writeString(name);
-        dest.writeFloat(stack);
-        dest.writeFloat(stackHelper);
-
     }
 }

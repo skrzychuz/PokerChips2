@@ -56,6 +56,7 @@ public class AdapterForWinners extends RecyclerView.Adapter<AdapterForWinners.My
 
         Players item = mWinners.get(position);
         holder.name.setText(item.getName());
+
         String string = Float.toString(item.bets());
         holder.bets.setText(string);
         
@@ -120,11 +121,13 @@ public class AdapterForWinners extends RecyclerView.Adapter<AdapterForWinners.My
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-          /*  String text = s.toString();
+            String text = s.toString();
             if(text.isEmpty())
-                mWinners.get(position).setWins("0");
-            else
-                mWinners.get(position).setWins(text); */
+                mWinners.get(position).setWins(0.0f);
+            else {
+                Float in = Float.parseFloat(text);
+                mWinners.get(position).setWins(in);
+            }
 
         }
 

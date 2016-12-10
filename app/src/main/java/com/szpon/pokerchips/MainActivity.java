@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
@@ -29,13 +30,15 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<Players> zapas;
     public ArrayList<Players> kopialisty;
-
+    TextView pot;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        pot = (TextView) findViewById(R.id.MainPotID);
 
         myRecycler = (RecyclerView) findViewById(R.id.recyclerview);
         myRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -46,7 +49,25 @@ public class MainActivity extends AppCompatActivity {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createHelperCallback());
         itemTouchHelper.attachToRecyclerView(myRecycler);
 
+
+        Players item = new Players("jacek", 100 ,0, false);
+        PlayersList.add(item);
+        myAdapter.notifyItemInserted(PlayersList.indexOf(item));
+
+        Players item2 = new Players("placek", 100 ,0, false);
+        PlayersList.add(item2);
+        myAdapter.notifyItemInserted(PlayersList.indexOf(item2));
+
+
+
+
+
+}
+
+    public void updatePOT(String text) {
+        pot.setText(text);
     }
+
 
     private ItemTouchHelper.Callback createHelperCallback() {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
@@ -77,8 +98,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refresh(View view) {
-
+        float pula = 0;
         myAdapter.notifyDataSetChanged();
+        for (int i=0; i<PlayersList.size(); i++) {
+            float pothelper = PlayersList.get(i).bets();
+            pula+=pothelper;
+        }
+        String s = Float.toString(pula);
+        pot.setText(s);
 
     }
     public void plus2(View view) {
@@ -90,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         //  startActivity(new Intent(MainActivity.this, Pop.class));
         kopialisty = new ArrayList<>(myAdapter.mPlayersListChecked);
         float fpot = 0;
+  //      myAdapter.mPlayersListChecked.clear();
 
         for (int i = 0; i < myAdapter.mPlayersList.size(); i++) {
             fpot = fpot + myAdapter.mPlayersList.get(i).bets();
@@ -118,54 +146,33 @@ public class MainActivity extends AppCompatActivity {
                     String name = data.getStringExtra("name");
                     Float stack = Float.parseFloat(data.getStringExtra("stack"));
                     Players item = new Players(name, stack ,0, false);
+                    item.setStack();
                     PlayersList.add(item);
                     myAdapter.notifyItemInserted(PlayersList.indexOf(item));
+
+
                 }
                 break;
-          /*  case WINNERS_CODE:
+            case WINNERS_CODE:
                 if (resultCode == RESULT_OK) {
                     kopialisty = data.getParcelableArrayListExtra("backPOP");
 
-                    for (int i = 0; i<listData.size(); i++) {
+                    for (int i = 0; i<PlayersList.size(); i++) {
                         for(int j = 0; j < kopialisty.size(); j++) {
-                            if (listData.get(i).getID() == kopialisty.get(j).getID()) {
-
-                                //  listData.remove(i);
-                                //  listData.add(i, kopialisty.get(j));
-                                listData.get(i).setWins(kopialisty.get(j).getWins());
-                                myAdapter.notifyItemChanged(listData.indexOf(listData.get(i)));
+                            if (PlayersList.get(i).getID() == kopialisty.get(j).getID()) {
+                                PlayersList.get(i).setWins(kopialisty.get(j).getWins());
+                                PlayersList.get(i).setStack();
+                                myAdapter.notifyItemChanged(PlayersList.indexOf(PlayersList.get(i)));
                                 myAdapter.notifyDataSetChanged();
-
                             }
 
-                            // GDZIE NAJLEPIEJ TO UMIESCIC??
-                            String string2 = listData.get(i).getName2();
-                            float fstring2 = Float.parseFloat(string2);
-
-                            String string3 = listData.get(i).getName3();
-                            float fstring3 = Float.parseFloat(string3);
-
-                            String string4 = listData.get(i).getName4();
-                            float fstring4 = Float.parseFloat(string4);
-
-                            String wins = listData.get(i).getWins();
-                            float fwins = Float.parseFloat(wins);
-
-                            float fstring1 = fstring4 - fstring2 - fstring3 + fwins;
-
-                            String stringSuma = String.valueOf(fstring1);
-
-                            listData.get(i).setName1(stringSuma);
-
-                            myAdapter.notifyDataSetChanged();
-
                         }
+                       PlayersList.get(i).clean();
                     }
-
                     myAdapter.notifyDataSetChanged();
                 }
 
-                break;    */
+                break;
         }
     }
 }
