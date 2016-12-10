@@ -33,6 +33,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
 
 
     public MyAdapter(ArrayList<Players> playerslist, Context c) {
+     //   this.mPlayersListChecked.clear();
         this.MyInflater = LayoutInflater.from(c);
         this.mPlayersList = playerslist;
         this.contex = c;

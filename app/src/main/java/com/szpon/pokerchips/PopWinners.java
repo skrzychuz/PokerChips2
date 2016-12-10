@@ -31,7 +31,7 @@ public class PopWinners extends AppCompatActivity {
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
 
-
+        test2.clear();
         test2 = this.getIntent().getParcelableArrayListExtra("extra");
         float pot = this.getIntent().getFloatExtra("pot",0.0f);
 
@@ -59,7 +59,6 @@ public class PopWinners extends AppCompatActivity {
         Intent intent = getIntent();
         intent.putExtra("backPOP", test2);
         setResult(RESULT_OK, intent);
-        test2.clear();
         finish();
     }
 

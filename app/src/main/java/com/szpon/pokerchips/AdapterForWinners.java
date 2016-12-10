@@ -20,7 +20,7 @@ public class AdapterForWinners extends RecyclerView.Adapter<AdapterForWinners.My
 
 
     private LayoutInflater MyInflater;
-    public ArrayList<Players> mWinners;
+    public ArrayList<Players> mWinners = new ArrayList<>();
 
 
   /*      private class MyViewHolder extends RecyclerView.ViewHolder {
@@ -36,6 +36,7 @@ public class AdapterForWinners extends RecyclerView.Adapter<AdapterForWinners.My
 
 
     public AdapterForWinners(ArrayList<Players> lista, Context c) {
+        this.mWinners.clear();
         this.MyInflater = LayoutInflater.from(c);
         this.mWinners = lista;
     }

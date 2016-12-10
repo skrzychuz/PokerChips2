@@ -98,7 +98,7 @@ public class Players implements Parcelable {
     }
 
     public void setStack() {
-       this.stack = this.buyin - this.bets() + getWins();
+       this.stack = this.stackHelper - this.bets() + getWins();
     }
 
     public float getStackHelper() {

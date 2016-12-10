@@ -134,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+       myAdapter.mPlayersListChecked.clear();
+
 }
 
 
@@ -167,13 +169,19 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                         }
-                       PlayersList.get(i).clean();
+                        PlayersList.get(i).clean();
+                        PlayersList.get(i).setStackHelper(PlayersList.get(i).getStack());
                     }
                     myAdapter.notifyDataSetChanged();
                 }
 
                 break;
         }
+    }
+
+    public void plus(View view) {
+        //debuger
+        myAdapter.notifyDataSetChanged();
     }
 }
 
