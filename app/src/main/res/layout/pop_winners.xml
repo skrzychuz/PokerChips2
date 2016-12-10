@@ -13,18 +13,16 @@
     tools:context="com.szpon.pokerchips.MainActivity"
     android:background="#48c1c1c1">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/butonpop1"
-        android:text="refresh"
-        android:onClick="refresz2"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/butonpop2"
-        android:text="finish"
+        android:text="OK"
         android:onClick="powrotpop"/>
 
     <TextView
@@ -32,16 +30,9 @@
         android:layout_height="wrap_content"
         android:text="terefere"
         android:id="@+id/textpop1id"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="terefere"
-        android:id="@+id/textpop2id"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="terefere"
-        android:id="@+id/textpop3id"/>
+
+    </LinearLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerwinner"

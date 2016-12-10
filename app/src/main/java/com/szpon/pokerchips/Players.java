@@ -21,7 +21,8 @@ public class Players implements Parcelable {
     public Players(String name, float buyin, float stackHelper, boolean isSelected) {
         this.name = name;
         this.buyin = buyin;
-        this.stackHelper = stackHelper;
+        this.stack = buyin;
+        this.stackHelper = buyin;
         this.isSelected = isSelected;
         this.wins = 0;
 

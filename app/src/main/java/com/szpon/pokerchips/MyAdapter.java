@@ -2,6 +2,7 @@ package com.szpon.pokerchips;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -76,14 +77,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         holder.Check.setChecked(mPlayersList.get(position).isSelected()); //if true, checkbox will be selected, else unselected
 
         //CONTEX MENU
-       /* holder.name.setOnClickListener(new View.OnClickListener() {
+        holder.name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 //creating a popup menu
                 PopupMenu popup = new PopupMenu(contex, holder.name);   //holder is accessed from inner class must  be final ??
                 //inflating menu from xml resource
-                popup.inflate(R.menu.pop_menu);
+                popup.inflate(R.menu.menu);
                 //adding click listener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -93,15 +94,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                                 //handle menu1 click
                                 break;
                             case R.id.Delete:
-                                ListItem nowy = lista2.get(holder.getAdapterPosition());
+                                Players nowy = mPlayersList.get(holder.getAdapterPosition());
 
-                                Intent i = new Intent(contex, PopupExit.class);
+                                Intent i = new Intent(contex, PopUpExit.class);
                                 //  i.putParcelableArrayListExtra("winner", lista2);
                                 i.putExtra("asdf", nowy);
                                 contex.startActivity(i);
 
 
-                                lista2.remove(holder.getAdapterPosition());
+                                mPlayersList.remove(holder.getAdapterPosition());
                                 notifyItemRemoved(holder.getAdapterPosition());
                                 //handle menu2 click
                                 break;
@@ -117,7 +118,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
 
             }
         });
-*/
+
 
 
     holder.setItemClickListenerr(new ItemClickListenerr() {

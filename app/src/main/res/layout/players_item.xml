@@ -26,7 +26,7 @@
             android:textAlignment="center"
             android:textSize="20dp" />
         <TextView
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:id="@+id/stackID"
             android:text="stack"
@@ -34,7 +34,7 @@
             android:textSize="20dp" />
         <EditText
             android:imeOptions="flagNoExtractUi"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:id="@+id/preflopID"
             android:inputType="numberDecimal"
@@ -44,7 +44,7 @@
         <EditText
 
             android:imeOptions="flagNoExtractUi"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:id="@+id/flopID"
             android:inputType="number|numberDecimal"
@@ -53,7 +53,7 @@
             android:textSize="20dp" />
         <EditText
             android:imeOptions="flagNoExtractUi"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:id="@+id/turnID"
             android:inputType="number|numberDecimal"
@@ -62,7 +62,7 @@
             android:textSize="20dp" />
         <EditText
             android:imeOptions="flagNoExtractUi"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:id="@+id/riverID"
             android:inputType="number|numberDecimal"

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="100dp"
+    android:layout_width="100dp"
+    >
+
+    <item
+        android:id="@+id/Rebuy"
+        android:title="Rebuy" />
+
+    <item
+        android:id="@+id/Delete"
+        android:title="Delete" />
+
+    <item
+        android:id="@+id/menu3"
+        android:title="Menu 3" />
+
+
+</menu>
