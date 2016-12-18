@@ -36,7 +36,7 @@ public class PopWinners extends AppCompatActivity {
         float pot = this.getIntent().getFloatExtra("pot",0.0f);
 
 
-        getWindow().setLayout((int) (width*0.65), (int) (height*0.85));
+        getWindow().setLayout((int) (width*0.50), (int) (height*0.85));
 
 
 

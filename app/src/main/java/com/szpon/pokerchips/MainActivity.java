@@ -30,13 +30,15 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<Players> zapas;
     public ArrayList<Players> kopialisty;
-    TextView pot;
+    public TextView pot;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         pot = (TextView) findViewById(R.id.MainPotID);
 
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createHelperCallback());
         itemTouchHelper.attachToRecyclerView(myRecycler);
 
-
+/*
         Players item = new Players("jacek", 100 ,0, false);
         PlayersList.add(item);
         myAdapter.notifyItemInserted(PlayersList.indexOf(item));
@@ -58,21 +60,17 @@ public class MainActivity extends AppCompatActivity {
         PlayersList.add(item2);
         myAdapter.notifyItemInserted(PlayersList.indexOf(item2));
 
-
+*/
 
 
 
 }
 
-    public void updatePOT(String text) {
-        pot.setText(text);
-    }
-
 
     private ItemTouchHelper.Callback createHelperCallback() {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
                 new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-                        ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                        ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT ) {
 
                     @Override
                     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
@@ -125,7 +123,27 @@ public class MainActivity extends AppCompatActivity {
 
         if (kopialisty.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Please select winners", Toast.LENGTH_SHORT).show();
-        } else {
+        }
+        if (kopialisty.size()==1) {
+
+            int id = kopialisty.get(0).getID();
+
+            for (Players x : PlayersList) {
+
+                if (x.getID() == id) {
+                    x.setWins(fpot);
+                    x.setStack();
+                }
+                x.clean();
+                x.setStackHelper(x.getStack());
+                myAdapter.notifyDataSetChanged();
+
+
+            }
+
+        }
+        else
+        {
 
             Intent i = new Intent(this, PopWinners.class);
             i.putParcelableArrayListExtra("extra", kopialisty);
@@ -164,8 +182,8 @@ public class MainActivity extends AppCompatActivity {
                             if (PlayersList.get(i).getID() == kopialisty.get(j).getID()) {
                                 PlayersList.get(i).setWins(kopialisty.get(j).getWins());
                                 PlayersList.get(i).setStack();
-                                myAdapter.notifyItemChanged(PlayersList.indexOf(PlayersList.get(i)));
-                                myAdapter.notifyDataSetChanged();
+                          //      myAdapter.notifyItemChanged(PlayersList.indexOf(PlayersList.get(i)));
+                           //     myAdapter.notifyDataSetChanged();
                             }
 
                         }
@@ -180,6 +198,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void plus(View view) {
+        Players item = new Players("Jacek", 100 ,0, false);
+        PlayersList.add(item);
+        myAdapter.notifyItemInserted(PlayersList.indexOf(item));
+
+        Players item2 = new Players("Placek", 100 ,0, false);
+        PlayersList.add(item2);
+        myAdapter.notifyItemInserted(PlayersList.indexOf(item2));
+
+        Players item3 = new Players("Bolek", 100 ,0, false);
+        PlayersList.add(item3);
+        myAdapter.notifyItemInserted(PlayersList.indexOf(item3));
+
+
+
+
         //debuger
         myAdapter.notifyDataSetChanged();
     }

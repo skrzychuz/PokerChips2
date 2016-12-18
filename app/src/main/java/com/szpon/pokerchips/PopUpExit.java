@@ -36,7 +36,7 @@ public class PopUpExit extends AppCompatActivity {
 
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
-        getWindow().setLayout((int) (width * 0.40), (int) (height * 0.50));
+        getWindow().setLayout((int) (width * 0.40), (int) (height * 0.30));
 
 
         //  test2 = this.getIntent().getParcelableArrayListExtra("winner");
@@ -44,11 +44,12 @@ public class PopUpExit extends AppCompatActivity {
         float pot = this.getIntent().getFloatExtra("pot", 0.0f);
 
         TextView opis1 = (TextView) findViewById(R.id.narka1);
-        String s = Float.toString(nowy.getStack());
-        opis1.setText(s);
+        String s = nowy.getName();
+        opis1.setText(s + " Leaves The Table");
 
         TextView opis2 = (TextView) findViewById(R.id.narka2);
-        opis2.setText(nowy.getName());
+        String s1 = Float.toString(nowy.getStack());
+        opis2.setText("Your Stack:" + s1);
 
 
 

@@ -20,12 +20,14 @@ public class Players implements Parcelable {
 
     public Players(String name, float buyin, float stackHelper, boolean isSelected) {
         this.name = name;
-        this.buyin = buyin;
+    //    this.buyin = buyin;
         this.stack = buyin;
         this.stackHelper = buyin;
         this.isSelected = isSelected;
         this.wins = 0;
 
+
+     //   reBuys(buyin);
         uniqID++;
         ID = uniqID;
 
@@ -75,7 +77,15 @@ public class Players implements Parcelable {
     }
     public void reBuys (float rebuy) {
 
-        this.stack = this.stack + rebuy;
+        this.buyin += rebuy;
+    }
+
+    public float getBuyin() {
+        return buyin;
+    }
+
+    public void setBuyin(float buyin) {
+        this.buyin = this.buyin + buyin;
     }
 
     public boolean isSelected() {
@@ -99,7 +109,7 @@ public class Players implements Parcelable {
     }
 
     public void setStack() {
-       this.stack = this.stackHelper - this.bets() + getWins();
+       this.stack = this.stackHelper - this.bets() + getWins() + getBuyin();
     }
 
     public float getStackHelper() {

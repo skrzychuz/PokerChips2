@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,7 +31,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     private LayoutInflater MyInflater;
     private Context contex;
     Activity activity;
-   // TextView pot = (TextView)findViewById(R.id.MainPotID);
 
 
     public MyAdapter(ArrayList<Players> playerslist, Context c) {
@@ -38,7 +38,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         this.MyInflater = LayoutInflater.from(c);
         this.mPlayersList = playerslist;
         this.contex = c;
+
     }
+
 
     @Override
     public MyAdapter.MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,11 +51,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
 
     @Override
     public void onBindViewHolder(final MyAdapter.MyHolder holder, int position) {
+
         Players player = mPlayersList.get(position);
 
         holder.name.setText(player.getName());
 
-        String stack = Float.toString(player.getStack());
+        final String stack = Float.toString(player.getStack());
         holder.stack.setText(stack);
 
         holder.myCustomEditTextListenert1.updatePosition(holder.getAdapterPosition());
@@ -91,7 +94,28 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.Rebuy:
-                                //handle menu1 click
+                                int position;
+
+                                position = holder.getAdapterPosition();
+                                Players player = mPlayersList.get(position);
+                                player.reBuys(100);
+                                player.setStack();
+/*
+                                mPlayersList.remove(player);
+                                notifyItemRemoved(position);
+
+                                mPlayersList.add(position, player);
+                                notifyItemInserted(position);
+                           //     notifyItemInserted(position);
+                           //     notifyItemChanged(position);
+                              //  player.getStack();
+*/
+                               notifyDataSetChanged();
+
+
+                           //     notifyItemChanged(holder.getAdapterPosition());
+
+
                                 break;
                             case R.id.Delete:
                                 Players nowy = mPlayersList.get(holder.getAdapterPosition());
@@ -105,9 +129,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                                 mPlayersList.remove(holder.getAdapterPosition());
                                 notifyItemRemoved(holder.getAdapterPosition());
                                 //handle menu2 click
-                                break;
-                            case R.id.menu3:
-                                //handle menu3 click
                                 break;
                         }
                         return false;
@@ -135,7 +156,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 mPlayersListChecked.remove(mPlayersList.get(pos));
             }
         }
-    }); 
+    });
+
+
+
 
     }
 
@@ -165,6 +189,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         ItemClickListenerr itemClickListenerr;
 
 
+
         public MyHolder(View itemView, MyCustomEditTextListener po_co_mi_ten_szajs) {
             super(itemView);
 
@@ -174,11 +199,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             name = (TextView) itemView.findViewById(R.id.nameID);
             stack = (TextView) itemView.findViewById(R.id.stackID);
 
-            preFlop = (EditText) itemView.findViewById(R.id.preflopID);
+            preFlop = (EditText) itemView.findViewById(R.id.a1_preflopID);
             myCustomEditTextListenert1 = new MyCustomEditTextListener(preFlop);
             preFlop.addTextChangedListener(this.myCustomEditTextListenert1);
 
-            flop = (EditText) itemView.findViewById(R.id.flopID);
+            flop = (EditText) itemView.findViewById(R.id.a2_flopID);
             myCustomEditTextListenert2 = new MyCustomEditTextListener(flop);
             this.flop.addTextChangedListener(this.myCustomEditTextListenert2);
 
@@ -189,6 +214,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             river = (EditText) itemView.findViewById(R.id.riverID);
             myCustomEditTextListenert4 = new MyCustomEditTextListener(river);
             this.river.addTextChangedListener(this.myCustomEditTextListenert4);
+
+        //    preFlop.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 
         }
 
@@ -228,16 +255,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             mPlayersList.get(position).setStack();
 
             switch (view.getId()) {
-                case R.id.preflopID:
+                case R.id.a1_preflopID:
                     if (text.isEmpty())
                         mPlayersList.get(position).setPreFlop(0.0f);
                     else {
                         Float in = Float.parseFloat(text);
                         mPlayersList.get(position).setPreFlop(in);
+
                     }
 
                     break;
-                case R.id.flopID:
+                case R.id.a2_flopID:
                     if (text.isEmpty())
                         mPlayersList.get(position).setFlop(0.0f);
                     else
@@ -297,6 +325,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
 */
         }
     }
+
 }
 
 

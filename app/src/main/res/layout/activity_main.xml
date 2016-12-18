@@ -38,7 +38,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/B_addPlayerID"
         android:text="Add Player"
-        android:onClick="plus2"/>
+        android:onClick="plus2"
+        android:elevation="5dp"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -53,6 +54,8 @@
         android:text="Next Hand"
         android:onClick="finish"/>
     </LinearLayout>
+
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
