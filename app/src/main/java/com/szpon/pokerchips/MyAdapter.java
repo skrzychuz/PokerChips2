@@ -3,10 +3,14 @@ package com.szpon.pokerchips;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.Tag;
+import android.os.Handler;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +21,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by KS on 2016-12-09.
@@ -31,16 +37,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     private LayoutInflater MyInflater;
     private Context contex;
     Activity activity;
+    private refreshInter refresher;
+    private boolean flaga;
+    private Timer timer;
+    private Timer timerr;
+    final Handler mHandler = new Handler();
 
 
-    public MyAdapter(ArrayList<Players> playerslist, Context c) {
-     //   this.mPlayersListChecked.clear();
+    public MyAdapter(ArrayList<Players> playerslist, Context c, refreshInter refresher) {
+        //   this.mPlayersListChecked.clear();
         this.MyInflater = LayoutInflater.from(c);
         this.mPlayersList = playerslist;
         this.contex = c;
-
+        this.refresher = refresher;
     }
-
 
     @Override
     public MyAdapter.MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,6 +62,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     @Override
     public void onBindViewHolder(final MyAdapter.MyHolder holder, int position) {
 
+
+        flaga = true;
         Players player = mPlayersList.get(position);
 
         holder.name.setText(player.getName());
@@ -63,9 +75,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         String preFlop = Float.toString(mPlayersList.get(holder.getAdapterPosition()).getPreFlop());
         holder.preFlop.setText(preFlop);
 
+
         holder.myCustomEditTextListenert2.updatePosition(holder.getAdapterPosition());
         String flop = Float.toString(mPlayersList.get(holder.getAdapterPosition()).getFlop());
         holder.flop.setText(flop);
+
 
         holder.myCustomEditTextListenert3.updatePosition(holder.getAdapterPosition());
         String turn = Float.toString(mPlayersList.get(holder.getAdapterPosition()).getTurn());
@@ -78,6 +92,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
 
         holder.Check.setOnCheckedChangeListener(null);
         holder.Check.setChecked(mPlayersList.get(position).isSelected()); //if true, checkbox will be selected, else unselected
+
+
+        flaga = false;
 
         //CONTEX MENU
         holder.name.setOnClickListener(new View.OnClickListener() {
@@ -100,21 +117,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                                 Players player = mPlayersList.get(position);
                                 player.reBuys(100);
                                 player.setStack();
-/*
-                                mPlayersList.remove(player);
-                                notifyItemRemoved(position);
-
-                                mPlayersList.add(position, player);
-                                notifyItemInserted(position);
-                           //     notifyItemInserted(position);
-                           //     notifyItemChanged(position);
-                              //  player.getStack();
-*/
-                               notifyDataSetChanged();
-
-
-                           //     notifyItemChanged(holder.getAdapterPosition());
-
+                                notifyDataSetChanged();
 
                                 break;
                             case R.id.Delete:
@@ -141,31 +144,28 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         });
 
 
+        holder.setItemClickListenerr(new ItemClickListenerr() {
+            @Override
+            public void onItemClickk(View v, int pos) {
+                CheckBox chk = (CheckBox) v;
 
-    holder.setItemClickListenerr(new ItemClickListenerr() {
-        @Override
-        public void onItemClickk(View v, int pos) {
-            CheckBox chk = (CheckBox) v;
+                if (chk.isChecked()) {
+                    mPlayersListChecked.add(mPlayersList.get(pos));
+                    mPlayersList.get(pos).setSelected(true);
 
-            if(chk.isChecked()) {
-                mPlayersListChecked.add(mPlayersList.get(pos));
-                mPlayersList.get(pos).setSelected(true);
-
-            } else if(!chk.isChecked()){
-                mPlayersList.get(pos).setSelected(false);
-                mPlayersListChecked.remove(mPlayersList.get(pos));
+                } else if (!chk.isChecked()) {
+                    mPlayersList.get(pos).setSelected(false);
+                    mPlayersListChecked.remove(mPlayersList.get(pos));
+                }
             }
-        }
-    });
-
-
+        });
 
 
     }
 
     @Override
     public int getItemCount() {
-       return mPlayersList.size();
+        return mPlayersList.size();
     }
 
     public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -189,7 +189,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         ItemClickListenerr itemClickListenerr;
 
 
-
         public MyHolder(View itemView, MyCustomEditTextListener po_co_mi_ten_szajs) {
             super(itemView);
 
@@ -200,22 +199,78 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             stack = (TextView) itemView.findViewById(R.id.stackID);
 
             preFlop = (EditText) itemView.findViewById(R.id.a1_preflopID);
+            preFlop.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                        refresher.refresz123();
+
+                     /*   preFlop.setFocusable(false);
+                        // Set EditText to be focusable again
+                        preFlop.setFocusable(true);
+                        preFlop.setFocusableInTouchMode(true);
+                        */
+                    }
+                    return false;
+                }
+            });
             myCustomEditTextListenert1 = new MyCustomEditTextListener(preFlop);
             preFlop.addTextChangedListener(this.myCustomEditTextListenert1);
 
             flop = (EditText) itemView.findViewById(R.id.a2_flopID);
+            flop.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                        refresher.refresz123();
+
+                     /*   preFlop.setFocusable(false);
+                        // Set EditText to be focusable again
+                        preFlop.setFocusable(true);
+                        preFlop.setFocusableInTouchMode(true);
+                        */
+                    }
+                    return false;
+                }
+            });
+
             myCustomEditTextListenert2 = new MyCustomEditTextListener(flop);
             this.flop.addTextChangedListener(this.myCustomEditTextListenert2);
 
             turn = (EditText) itemView.findViewById(R.id.turnID);
+            turn.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                        refresher.refresz123();
+
+                     /*   preFlop.setFocusable(false);
+                        // Set EditText to be focusable again
+                        preFlop.setFocusable(true);
+                        preFlop.setFocusableInTouchMode(true);
+                        */
+                    }
+                    return false;
+                }
+            });
             myCustomEditTextListenert3 = new MyCustomEditTextListener(turn);
             this.turn.addTextChangedListener(this.myCustomEditTextListenert3);
 
             river = (EditText) itemView.findViewById(R.id.riverID);
+            river.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                        refresher.refresz123();
+
+                     /*   preFlop.setFocusable(false);
+                        // Set EditText to be focusable again
+                        preFlop.setFocusable(true);
+                        preFlop.setFocusableInTouchMode(true);
+                        */
+                    }
+                    return false;
+                }
+            });
             myCustomEditTextListenert4 = new MyCustomEditTextListener(river);
             this.river.addTextChangedListener(this.myCustomEditTextListenert4);
 
-        //    preFlop.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 
         }
 
@@ -233,7 +288,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         private int position;
         private View view;
 
-
         private MyCustomEditTextListener(View view) {
             this.view = view;
         }
@@ -245,33 +299,46 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
 
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            // no op
+
         }
 
         @Override
-        public void onTextChanged(CharSequence s, int i, int i2, int i3) {
+        public void onTextChanged(final CharSequence s, int i, int i2, int i3) {
 
-            String text = s.toString();
-            mPlayersList.get(position).setStack();
+            if (timerr != null) {
+                timerr.cancel();
+            }
+        }
 
+        @Override
+        public void afterTextChanged(final Editable e) {
+
+
+            String text = e.toString();
             switch (view.getId()) {
+
+
                 case R.id.a1_preflopID:
+
+
                     if (text.isEmpty())
                         mPlayersList.get(position).setPreFlop(0.0f);
                     else {
+                        Log.i("ELSE", "else");
                         Float in = Float.parseFloat(text);
                         mPlayersList.get(position).setPreFlop(in);
-
+                        mPlayersList.get(position).setStack();
+                     //   refresher.refresz123();
                     }
-
                     break;
                 case R.id.a2_flopID:
                     if (text.isEmpty())
                         mPlayersList.get(position).setFlop(0.0f);
-                    else
-                    {
+                    else {
                         Float in = Float.parseFloat(text);
                         mPlayersList.get(position).setFlop(in);
+                        mPlayersList.get(position).setStack();
+
                     }
                     break;
                 case R.id.turnID:
@@ -280,59 +347,116 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                     else {
                         Float in = Float.parseFloat(text);
                         mPlayersList.get(position).setTurn(in);
+                        mPlayersList.get(position).setStack();
+
                     }
                     break;
-                
+
                 case R.id.riverID:
                     if (text.isEmpty())
                         mPlayersList.get(position).setRiver((float) 0.0);
                     else {
                         Float in = Float.parseFloat(text);
                         mPlayersList.get(position).setRiver(in);
+                        mPlayersList.get(position).setStack();
+
                     }
                     break;
+
+
+                // user typed: start the timer
+/*
+            if (!flaga) {
+
+
+                Log.i("RUN", "flaga");
+                timerr = new Timer();
+                timerr.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Log.i("RUN", "GLOWNY RUN");
+                        //  activity.runOnUiThread(new Runnable() {
+
+                        mHandler.post(new Runnable() {
+
+                                          @Override
+                                          public void run() {
+
+                                              Log.i("RUN", "pierwszy RUN");
+                                              String text = e.toString();
+                                              switch (view.getId()) {
+
+
+                                                  case R.id.a1_preflopID:
+
+
+                                                      if (text.isEmpty())
+                                                          mPlayersList.get(position).setPreFlop(0.0f);
+                                                      else {
+                                                          Log.i("ELSE", "else");
+                                                          Float in = Float.parseFloat(text);
+                                                          mPlayersList.get(position).setPreFlop(in);
+                                                          mPlayersList.get(position).setStack();
+                                                          refresher.refresz123();
+                                                      }
+                                                      break;
+                                                  case R.id.a2_flopID:
+                                                      if (text.isEmpty())
+                                                          mPlayersList.get(position).setFlop(0.0f);
+                                                      else {
+                                                          Float in = Float.parseFloat(text);
+                                                          mPlayersList.get(position).setFlop(in);
+                                                          mPlayersList.get(position).setStack();
+                                                          refresher.refresz123();
+                                                      }
+                                                      break;
+                                                  case R.id.turnID:
+                                                      if (text.isEmpty())
+                                                          mPlayersList.get(position).setTurn(0.0f);
+                                                      else {
+                                                          Float in = Float.parseFloat(text);
+                                                          mPlayersList.get(position).setTurn(in);
+                                                          mPlayersList.get(position).setStack();
+                                                          refresher.refresz123();
+                                                      }
+                                                      break;
+
+                                                  case R.id.riverID:
+                                                      if (text.isEmpty())
+                                                          mPlayersList.get(position).setRiver((float) 0.0);
+                                                      else {
+                                                          Float in = Float.parseFloat(text);
+                                                          mPlayersList.get(position).setRiver(in);
+                                                          mPlayersList.get(position).setStack();
+                                                          refresher.refresz123();
+                                                      }
+                                                      break;
+                                              }
+                                          }
+                                      }
+                        );
+
+                        try {
+                            Thread.sleep(2000);
+                            Log.i("RUN", "try sleep1");
+                        } catch (InterruptedException e) {
+                            Log.i("RUN", "catch");
+                            e.printStackTrace();
+                        }
+
+
+                        // hide keyboard as well?
+                        // InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        // in.hideSoftInputFromWindow(searchText.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
+                }, 2000); //  delay before the timer executes the "run" method from TimerTask
+
             }
-            mPlayersList.get(position).setStack();
+            Log.i("TAG", "wychodzi poza flage");
+           // refresher.refresz123();    */
+            }
 
-
-
-        }
-
-
-        @Override
-        public void afterTextChanged(Editable e) {
-
-           // ((MainActivity ) activity).updatePOT("asdf");
-
-          /*  String string2 = lista2.get(position).getName2();
-            float fstring2 = Float.parseFloat(string2);
-
-            String string3 = lista2.get(position).getName3();
-            float fstring3 = Float.parseFloat(string3);
-
-            String string4 = lista2.get(position).getName4();
-            float fstring4 = Float.parseFloat(string4);
-
-            String wins = lista2.get(position).getWins();
-            float fwins = Float.parseFloat(wins);
-
-            float fstring1 = fstring4 - fstring2 - fstring3 + fwins;
-
-            String stringSuma = String.valueOf(fstring1);
-
-            lista2.get(position).setName1(stringSuma);
-
-*/
         }
     }
-
 }
-
-
-
-
-
-
-
-
 

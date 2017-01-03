@@ -18,7 +18,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements refreshInter {
 
 
     RecyclerView myRecycler;
@@ -34,6 +34,19 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
+    public void refresz123() {
+        float pula = 0;
+        myAdapter.notifyDataSetChanged();
+        for (int i=0; i<PlayersList.size(); i++) {
+            float pothelper = PlayersList.get(i).bets();
+            pula+=pothelper;
+        }
+        String s = Float.toString(pula);
+        pot.setText("POT: " + s);
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -45,12 +58,16 @@ public class MainActivity extends AppCompatActivity {
         myRecycler = (RecyclerView) findViewById(R.id.recyclerview);
         myRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-        myAdapter = new MyAdapter(PlayersList, this);
+        myAdapter = new MyAdapter(PlayersList, this, this);
         myRecycler.setAdapter(myAdapter);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createHelperCallback());
         itemTouchHelper.attachToRecyclerView(myRecycler);
 
+
+        float potFromAdapter = this.getIntent().getFloatExtra("pot", 0.0f);
+        String s = Float.toString(potFromAdapter);
+        pot.setText("POT: " +s);
 /*
         Players item = new Players("jacek", 100 ,0, false);
         PlayersList.add(item);
@@ -69,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ItemTouchHelper.Callback createHelperCallback() {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
-                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-                        ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT ) {
+                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP , ItemTouchHelper.DOWN)
+                         {
 
                     @Override
                     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
@@ -96,6 +113,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refresh(View view) {
+        float pula = 0;
+        myAdapter.notifyDataSetChanged();
+        for (int i=0; i<PlayersList.size(); i++) {
+            float pothelper = PlayersList.get(i).bets();
+            pula+=pothelper;
+        }
+        String s = Float.toString(pula);
+        pot.setText("POT: " + s);
+
+    }
+
+    public void refreshPot () {
         float pula = 0;
         myAdapter.notifyDataSetChanged();
         for (int i=0; i<PlayersList.size(); i++) {
@@ -137,13 +166,9 @@ public class MainActivity extends AppCompatActivity {
                 x.clean();
                 x.setStackHelper(x.getStack());
                 myAdapter.notifyDataSetChanged();
-
-
             }
-
         }
-        else
-        {
+        if (kopialisty.size()>1) {
 
             Intent i = new Intent(this, PopWinners.class);
             i.putParcelableArrayListExtra("extra", kopialisty);
@@ -153,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
        myAdapter.mPlayersListChecked.clear();
+        refresz123();
 
 }
 
@@ -216,6 +242,8 @@ public class MainActivity extends AppCompatActivity {
         //debuger
         myAdapter.notifyDataSetChanged();
     }
+
+
 }
 
 

@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/add_name_ID"
-        android:hint="Name" />
+        android:hint="Name"
+        android:editable="true" />
     <EditText
         android:imeOptions="flagNoExtractUi"
         android:layout_width="match_parent"
@@ -22,14 +23,14 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Dodaj"
+        android:text="ADD"
         android:id="@+id/addPlayerID"
         android:onClick="funkcjadodaj"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="jebac"
+        android:text="CANCEL"
         android:id="@+id/CancerlID"
         android:onClick="funkcjaanuluj"/>
 </LinearLayout>
