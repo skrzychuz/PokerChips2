@@ -81,9 +81,7 @@
             android:id="@+id/checkboxID"
             android:layout_height="wrap_content"
             android:onClick="onCheckboxClicked"
-            android:checked="false"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp" />/>
+            android:checked="false" />/>
 
 
     </LinearLayout>
