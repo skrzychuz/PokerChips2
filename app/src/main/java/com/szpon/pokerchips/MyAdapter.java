@@ -199,20 +199,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             stack = (TextView) itemView.findViewById(R.id.stackID);
 
             preFlop = (EditText) itemView.findViewById(R.id.a1_preflopID);
-            preFlop.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                        refresher.refresz123();
+            preFlop.setOnEditorActionListener(new BetValidator(refresher));
 
-                     /*   preFlop.setFocusable(false);
-                        // Set EditText to be focusable again
-                        preFlop.setFocusable(true);
-                        preFlop.setFocusableInTouchMode(true);
-                        */
-                    }
-                    return false;
-                }
-            });
             myCustomEditTextListenert1 = new MyCustomEditTextListener(preFlop);
             preFlop.addTextChangedListener(this.myCustomEditTextListenert1);
 
@@ -233,7 +221,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             });
 
             myCustomEditTextListenert2 = new MyCustomEditTextListener(flop);
-            this.flop.addTextChangedListener(this.myCustomEditTextListenert2);
+            flop.addTextChangedListener(myCustomEditTextListenert2);
 
             turn = (EditText) itemView.findViewById(R.id.turnID);
             turn.setOnEditorActionListener(new TextView.OnEditorActionListener() {
