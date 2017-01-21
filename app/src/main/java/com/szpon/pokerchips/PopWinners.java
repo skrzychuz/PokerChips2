@@ -9,6 +9,8 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.TextView;
 
+import com.szpon.pokerchips.pojo.Players;
+
 import java.util.ArrayList;
 
 /**

@@ -1,12 +1,14 @@
-package com.szpon.pokerchips;
+package com.szpon.pokerchips.pojo;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import io.realm.RealmObject;
+
 /**
  * Created by KS on 2016-12-09.
  */
-public class Players implements Parcelable {
+public class Players extends RealmObject implements Parcelable {
 
     private int ID;
     static int uniqID = 0;

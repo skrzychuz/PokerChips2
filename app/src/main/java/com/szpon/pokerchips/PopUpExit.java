@@ -1,19 +1,14 @@
 package com.szpon.pokerchips;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.szpon.pokerchips.AdapterForWinners;
-import com.szpon.pokerchips.Players;
-import com.szpon.pokerchips.R;
+import com.szpon.pokerchips.pojo.Players;
 
 import java.util.ArrayList;
 

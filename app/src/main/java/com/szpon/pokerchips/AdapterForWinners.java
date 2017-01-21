@@ -7,9 +7,10 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.szpon.pokerchips.pojo.Players;
 
 import java.util.ArrayList;
 

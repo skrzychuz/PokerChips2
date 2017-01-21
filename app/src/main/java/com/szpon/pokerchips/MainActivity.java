@@ -1,28 +1,27 @@
 package com.szpon.pokerchips;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.szpon.pokerchips.pojo.Players;
 
 import java.util.ArrayList;
+
+import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements refreshInter {
 
 
     RecyclerView myRecycler;
     MyAdapter myAdapter;
+    Realm realm;
 
     ArrayList<Players> PlayersList = new ArrayList<>();
     public static final int ADD_PLAYER_CODE = 1;
