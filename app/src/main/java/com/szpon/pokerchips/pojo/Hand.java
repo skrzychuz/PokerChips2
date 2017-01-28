@@ -2,6 +2,7 @@ package com.szpon.pokerchips.pojo;
 
 import java.util.ArrayList;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 /**
@@ -13,10 +14,13 @@ public class Hand extends RealmObject {
     private int handId;
     private float handPot;
 
-    ArrayList<Players> handPlayers;
+    RealmList<Players> handPlayers;
 
-
-
+    public Hand() {
+    }
+    public void sethandplayers(Players player) {
+        this.handPlayers.add(player);
+    }
 
 
 }

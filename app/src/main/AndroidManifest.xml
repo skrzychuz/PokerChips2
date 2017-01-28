@@ -19,8 +19,12 @@
         </activity>
         <activity android:name=".AddPlayer"/>
            <activity android:name=".PopWinners"
-               android:theme="@style/AppTheme.CustomTheme"/>/>
+               android:theme="@style/AppTheme.CustomTheme"/>
+
         <activity android:name=".PopUpExit"
+            android:theme="@style/AppTheme.CustomTheme"/>
+
+        <activity android:name=".Activities.History"
             android:theme="@style/AppTheme.CustomTheme"/>
 
 

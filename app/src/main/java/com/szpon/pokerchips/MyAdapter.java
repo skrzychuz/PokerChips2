@@ -19,6 +19,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.szpon.pokerchips.pojo.Game;
 import com.szpon.pokerchips.pojo.Players;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     private Timer timer;
     private Timer timerr;
     final Handler mHandler = new Handler();
+    Game game;
 
 
     public MyAdapter(ArrayList<Players> playerslist, Context c, refreshInter refresher) {
@@ -51,6 +53,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         this.contex = c;
         this.refresher = refresher;
     }
+
+    public MyAdapter(Game game, Context c, refreshInter refresher) {
+        //   this.mPlayersListChecked.clear();
+        this.MyInflater = LayoutInflater.from(c);
+        this.game = game;
+        this.contex = c;
+        this.refresher = refresher;
+        Log.i("YO nowy adapter","jo jo");
+    }
+
+
+
+
+
 
     @Override
     public MyAdapter.MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -165,7 +181,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
 
     @Override
     public int getItemCount() {
-        return mPlayersList.size();
+     //   return mPlayersList.size(); -----------------------------------------------
+        return 1;
     }
 
     public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

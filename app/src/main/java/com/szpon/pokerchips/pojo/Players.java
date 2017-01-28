@@ -20,6 +20,9 @@ public class Players extends RealmObject implements Parcelable {
     private float wins;
     private boolean isSelected;
 
+    public Players() {
+    }
+
     public Players(String name, float buyin, float stackHelper, boolean isSelected) {
         this.name = name;
         this.buyin = 0.0f;

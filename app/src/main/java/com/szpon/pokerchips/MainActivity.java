@@ -10,18 +10,27 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.stetho.Stetho;
+import com.szpon.pokerchips.Activities.History;
+import com.szpon.pokerchips.pojo.Game;
+import com.szpon.pokerchips.pojo.Hand;
 import com.szpon.pokerchips.pojo.Players;
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity implements refreshInter {
 
 
     RecyclerView myRecycler;
-    MyAdapter myAdapter;
+    MyAdapter myAdapter, myAdapter2;
     Realm realm;
+    RealmHelper realmHelper;
+    Game game124;
+
 
     ArrayList<Players> PlayersList = new ArrayList<>();
     public static final int ADD_PLAYER_CODE = 1;
@@ -48,8 +57,71 @@ public class MainActivity extends AppCompatActivity implements refreshInter {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .build();
+
+
+
+
+        Realm.setDefaultConfiguration(config);
+
+        realm = Realm.getInstance(config);
+
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
+                        .build());
+
+        setContentView(R.layout.activity_main);
+/*
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.deleteAll();
+            }
+        });
+*/
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Game game1 = realm.createObject(Game.class);
+                Number number = realm.where(Game.class).max("gameID");
+                int nextID;
+
+                if(number == null)
+                    nextID = 1;
+                else {
+                    nextID = number.intValue() + 1;
+                }
+
+
+                game1.setID2(nextID);
+
+                realm.copyToRealm(game1);
+
+
+                Hand hand1 = realm.createObject(Hand.class);
+                game1.setHandList(hand1);
+                Hand hand2 = realm.createObject(Hand.class);
+                game1.setHandList(hand2);
+
+                Players player1 = realm.createObject(Players.class);
+                hand1.sethandplayers(player1);
+                player1.setName("Tomek");
+
+                Players player2 = realm.createObject(Players.class);
+                hand1.sethandplayers(player2);
+                player2.setName("Radek");
+
+                Players player3 = realm.createObject(Players.class);
+                hand1.sethandplayers(player3);
+                player3.setName("Wojtek");
+            }
+        });
 
 
         pot = (TextView) findViewById(R.id.MainPotID);
@@ -58,7 +130,16 @@ public class MainActivity extends AppCompatActivity implements refreshInter {
         myRecycler.setLayoutManager(new LinearLayoutManager(this));
 
         myAdapter = new MyAdapter(PlayersList, this, this);
-        myRecycler.setAdapter(myAdapter);
+
+
+        realmHelper = new RealmHelper(realm);
+        game124 = realmHelper.loadGame();
+
+
+        myAdapter2 = new MyAdapter(game124, this, this);
+     //   myRecycler.setAdapter(myAdapter); -------------------------------------------------------<
+
+        myRecycler.setAdapter(myAdapter2);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createHelperCallback());
         itemTouchHelper.attachToRecyclerView(myRecycler);
@@ -243,6 +324,11 @@ public class MainActivity extends AppCompatActivity implements refreshInter {
     }
 
 
+    public void history(View view) {
+
+        Intent intent = new Intent(this, History.class);
+        startActivity(intent);
+    }
 }
 
 
