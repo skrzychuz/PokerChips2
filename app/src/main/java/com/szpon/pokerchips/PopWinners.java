@@ -18,7 +18,7 @@ public class PopWinners extends AppCompatActivity {
 
     AdapterForWinners winnersAdapter;
     RecyclerView winnersRecycler;
-    ArrayList<Players> test2 = new ArrayList<>();
+    ArrayList<Players> playersList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,33 +31,28 @@ public class PopWinners extends AppCompatActivity {
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
 
-        test2.clear();
-        test2 = this.getIntent().getParcelableArrayListExtra("extra");
+        playersList.clear();
+        playersList = this.getIntent().getParcelableArrayListExtra("extra");
         float pot = this.getIntent().getFloatExtra("pot",0.0f);
-
 
         getWindow().setLayout((int) (width*0.50), (int) (height*0.85));
 
-
-
         TextView textView = (TextView) findViewById(R.id.textpop1id);
         textView.setText("POT  " + String.valueOf(pot));
-
-
 
         winnersRecycler = (RecyclerView) findViewById(R.id.recyclerwinner);
         winnersRecycler.setHasFixedSize(true);
         winnersRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-        winnersAdapter = new AdapterForWinners(test2, this);
+        winnersAdapter = new AdapterForWinners(playersList, this);
         winnersRecycler.setAdapter(winnersAdapter);
     }
 
 
-    public void powrotpop(View view) {
+    public void exit(View view) {
 
         Intent intent = getIntent();
-        intent.putExtra("backPOP", test2);
+        intent.putExtra("backPOP", playersList);
         setResult(RESULT_OK, intent);
         finish();
     }

@@ -25,12 +25,12 @@
         android:layout_height="wrap_content"
         android:text="ADD"
         android:id="@+id/addPlayerID"
-        android:onClick="funkcjadodaj"/>
+        android:onClick="addPlayer"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="CANCEL"
         android:id="@+id/CancerlID"
-        android:onClick="funkcjaanuluj"/>
+        android:onClick="cancel"/>
 </LinearLayout>

@@ -26,11 +26,8 @@ public class Players implements Parcelable {
         this.isSelected = isSelected;
         this.wins = 0;
 
-
-     //   reBuys(buyin);
         uniqID++;
         ID = uniqID;
-
 
     }
 
