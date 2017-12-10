@@ -1,14 +1,11 @@
 package com.szpon.pokerchips;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,17 +16,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.szpon.pokerchips.pojo.Game;
 import com.szpon.pokerchips.pojo.Players;
 
 import java.util.ArrayList;
-import java.util.Timer;
-
-/**
- * Created by KS on 2016-12-09.
- *
- *
- */
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
 
@@ -37,36 +26,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     public ArrayList<Players> mPlayersListChecked = new ArrayList<>();
     private LayoutInflater MyInflater;
     private Context contex;
-    Activity activity;
-    private refreshInter refresher;
-    private boolean flaga;
-    private Timer timer;
-    private Timer timerr;
-    final Handler mHandler = new Handler();
-    Game game;
+    private Refresh refresher;
+    private boolean flag;
 
 
-    public MyAdapter(ArrayList<Players> playerslist, Context c, refreshInter refresher) {
-        //   this.mPlayersListChecked.clear();
+    public MyAdapter(ArrayList<Players> playerslist, Context c, Refresh refresher) {
+
         this.MyInflater = LayoutInflater.from(c);
         this.mPlayersList = playerslist;
         this.contex = c;
         this.refresher = refresher;
     }
-
-    public MyAdapter(Game game, Context c, refreshInter refresher) {
-        //   this.mPlayersListChecked.clear();
-        this.MyInflater = LayoutInflater.from(c);
-        this.game = game;
-        this.contex = c;
-        this.refresher = refresher;
-        Log.i("YO nowy adapter","jo jo");
-    }
-
-
-
-
-
 
     @Override
     public MyAdapter.MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -79,7 +49,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     public void onBindViewHolder(final MyAdapter.MyHolder holder, int position) {
 
 
-        flaga = true;
+        flag = true;
         Players player = mPlayersList.get(position);
 
         holder.name.setText(player.getName());
@@ -109,8 +79,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         holder.Check.setOnCheckedChangeListener(null);
         holder.Check.setChecked(mPlayersList.get(position).isSelected()); //if true, checkbox will be selected, else unselected
 
-
-        flaga = false;
+        flag = false;
 
         //CONTEX MENU
         holder.name.setOnClickListener(new View.OnClickListener() {
@@ -137,32 +106,26 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
 
                                 break;
                             case R.id.Delete:
-                                Players nowy = mPlayersList.get(holder.getAdapterPosition());
+                                Players newPlayer = mPlayersList.get(holder.getAdapterPosition());
 
                                 Intent i = new Intent(contex, PopUpExit.class);
-                                //  i.putParcelableArrayListExtra("winner", lista2);
-                                i.putExtra("asdf", nowy);
+                                i.putExtra("asdf", newPlayer);
                                 contex.startActivity(i);
-
-
                                 mPlayersList.remove(holder.getAdapterPosition());
                                 notifyItemRemoved(holder.getAdapterPosition());
-                                //handle menu2 click
                                 break;
                         }
                         return false;
                     }
                 });
-                //displaying the popup
-                popup.show();
 
+                popup.show();
             }
         });
 
-
-        holder.setItemClickListenerr(new ItemClickListenerr() {
+        holder.setItemClickListener(new ItemClickListener() {
             @Override
-            public void onItemClickk(View v, int pos) {
+            public void onItemClick(View v, int pos) {
                 CheckBox chk = (CheckBox) v;
 
                 if (chk.isChecked()) {
@@ -175,14 +138,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 }
             }
         });
-
-
     }
 
     @Override
     public int getItemCount() {
-     //   return mPlayersList.size(); -----------------------------------------------
-        return 1;
+        return mPlayersList.size();
     }
 
     public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -203,10 +163,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         public MyCustomEditTextListener myCustomEditTextListenert4;
 
         CheckBox Check;
-        ItemClickListenerr itemClickListenerr;
+        ItemClickListener itemClickListener;
 
 
-        public MyHolder(View itemView, MyCustomEditTextListener po_co_mi_ten_szajs) {
+        public MyHolder(View itemView, MyCustomEditTextListener myCustomEditTextListener) {
             super(itemView);
 
             Check = (CheckBox) itemView.findViewById(R.id.checkboxID);
@@ -216,8 +176,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             stack = (TextView) itemView.findViewById(R.id.stackID);
 
             preFlop = (EditText) itemView.findViewById(R.id.a1_preflopID);
-            preFlop.setOnEditorActionListener(new BetValidator(refresher));
-
+            preFlop.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                        refresher.refresh();
+                    }
+                    return false;
+                }
+            });
             myCustomEditTextListenert1 = new MyCustomEditTextListener(preFlop);
             preFlop.addTextChangedListener(this.myCustomEditTextListenert1);
 
@@ -225,32 +191,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             flop.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                        refresher.refresz123();
-
-                     /*   preFlop.setFocusable(false);
-                        // Set EditText to be focusable again
-                        preFlop.setFocusable(true);
-                        preFlop.setFocusableInTouchMode(true);
-                        */
+                        refresher.refresh();
                     }
                     return false;
                 }
             });
 
             myCustomEditTextListenert2 = new MyCustomEditTextListener(flop);
-            flop.addTextChangedListener(myCustomEditTextListenert2);
+            this.flop.addTextChangedListener(this.myCustomEditTextListenert2);
 
             turn = (EditText) itemView.findViewById(R.id.turnID);
             turn.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                        refresher.refresz123();
-
-                     /*   preFlop.setFocusable(false);
-                        // Set EditText to be focusable again
-                        preFlop.setFocusable(true);
-                        preFlop.setFocusableInTouchMode(true);
-                        */
+                        refresher.refresh();
                     }
                     return false;
                 }
@@ -262,30 +216,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             river.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                        refresher.refresz123();
-
-                     /*   preFlop.setFocusable(false);
-                        // Set EditText to be focusable again
-                        preFlop.setFocusable(true);
-                        preFlop.setFocusableInTouchMode(true);
-                        */
+                        refresher.refresh();
                     }
                     return false;
                 }
             });
             myCustomEditTextListenert4 = new MyCustomEditTextListener(river);
             this.river.addTextChangedListener(this.myCustomEditTextListenert4);
-
-
         }
 
-        public void setItemClickListenerr(ItemClickListenerr ic) {
-            this.itemClickListenerr = ic;
+        public void setItemClickListener(ItemClickListener ic) {
+            this.itemClickListener = ic;
         }
 
         @Override
         public void onClick(View v) {
-            this.itemClickListenerr.onItemClickk(v, getLayoutPosition());
+            this.itemClickListener.onItemClick(v, getLayoutPosition());
         }
     }
 
@@ -297,43 +243,30 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             this.view = view;
         }
 
-
         public void updatePosition(int position) {
             this.position = position;
         }
 
         @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-        }
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {        }
 
         @Override
-        public void onTextChanged(final CharSequence s, int i, int i2, int i3) {
-
-            if (timerr != null) {
-                timerr.cancel();
-            }
-        }
+        public void onTextChanged(final CharSequence s, int i, int i2, int i3) {        }
 
         @Override
         public void afterTextChanged(final Editable e) {
 
-
             String text = e.toString();
             switch (view.getId()) {
 
-
                 case R.id.a1_preflopID:
-
 
                     if (text.isEmpty())
                         mPlayersList.get(position).setPreFlop(0.0f);
                     else {
-                        Log.i("ELSE", "else");
                         Float in = Float.parseFloat(text);
                         mPlayersList.get(position).setPreFlop(in);
                         mPlayersList.get(position).setStack();
-                     //   refresher.refresz123();
                     }
                     break;
                 case R.id.a2_flopID:
@@ -343,7 +276,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                         Float in = Float.parseFloat(text);
                         mPlayersList.get(position).setFlop(in);
                         mPlayersList.get(position).setStack();
-
                     }
                     break;
                 case R.id.turnID:
@@ -353,7 +285,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                         Float in = Float.parseFloat(text);
                         mPlayersList.get(position).setTurn(in);
                         mPlayersList.get(position).setStack();
-
                     }
                     break;
 
@@ -364,103 +295,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                         Float in = Float.parseFloat(text);
                         mPlayersList.get(position).setRiver(in);
                         mPlayersList.get(position).setStack();
-
                     }
                     break;
-
-
-                // user typed: start the timer
-/*
-            if (!flaga) {
-
-
-                Log.i("RUN", "flaga");
-                timerr = new Timer();
-                timerr.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        Log.i("RUN", "GLOWNY RUN");
-                        //  activity.runOnUiThread(new Runnable() {
-
-                        mHandler.post(new Runnable() {
-
-                                          @Override
-                                          public void run() {
-
-                                              Log.i("RUN", "pierwszy RUN");
-                                              String text = e.toString();
-                                              switch (view.getId()) {
-
-
-                                                  case R.id.a1_preflopID:
-
-
-                                                      if (text.isEmpty())
-                                                          mPlayersList.get(position).setPreFlop(0.0f);
-                                                      else {
-                                                          Log.i("ELSE", "else");
-                                                          Float in = Float.parseFloat(text);
-                                                          mPlayersList.get(position).setPreFlop(in);
-                                                          mPlayersList.get(position).setStack();
-                                                          refresher.refresz123();
-                                                      }
-                                                      break;
-                                                  case R.id.a2_flopID:
-                                                      if (text.isEmpty())
-                                                          mPlayersList.get(position).setFlop(0.0f);
-                                                      else {
-                                                          Float in = Float.parseFloat(text);
-                                                          mPlayersList.get(position).setFlop(in);
-                                                          mPlayersList.get(position).setStack();
-                                                          refresher.refresz123();
-                                                      }
-                                                      break;
-                                                  case R.id.turnID:
-                                                      if (text.isEmpty())
-                                                          mPlayersList.get(position).setTurn(0.0f);
-                                                      else {
-                                                          Float in = Float.parseFloat(text);
-                                                          mPlayersList.get(position).setTurn(in);
-                                                          mPlayersList.get(position).setStack();
-                                                          refresher.refresz123();
-                                                      }
-                                                      break;
-
-                                                  case R.id.riverID:
-                                                      if (text.isEmpty())
-                                                          mPlayersList.get(position).setRiver((float) 0.0);
-                                                      else {
-                                                          Float in = Float.parseFloat(text);
-                                                          mPlayersList.get(position).setRiver(in);
-                                                          mPlayersList.get(position).setStack();
-                                                          refresher.refresz123();
-                                                      }
-                                                      break;
-                                              }
-                                          }
-                                      }
-                        );
-
-                        try {
-                            Thread.sleep(2000);
-                            Log.i("RUN", "try sleep1");
-                        } catch (InterruptedException e) {
-                            Log.i("RUN", "catch");
-                            e.printStackTrace();
-                        }
-
-
-                        // hide keyboard as well?
-                        // InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        // in.hideSoftInputFromWindow(searchText.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                    }
-                }, 2000); //  delay before the timer executes the "run" method from TimerTask
-
             }
-            Log.i("TAG", "wychodzi poza flage");
-           // refresher.refresz123();    */
-            }
-
         }
     }
 }

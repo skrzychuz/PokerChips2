@@ -8,8 +8,6 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.TextView;
 
-import com.szpon.pokerchips.pojo.Players;
-
 import java.util.ArrayList;
 
 /**
@@ -33,39 +31,28 @@ public class PopUpExit extends AppCompatActivity {
         int height = displayMetrics.heightPixels;
         getWindow().setLayout((int) (width * 0.40), (int) (height * 0.30));
 
-
-        //  test2 = this.getIntent().getParcelableArrayListExtra("winner");
         Players nowy = this.getIntent().getParcelableExtra("asdf");
-        float pot = this.getIntent().getFloatExtra("pot", 0.0f);
 
-        TextView opis1 = (TextView) findViewById(R.id.narka1);
+        TextView playerLeave = (TextView) findViewById(R.id.line1);
         String s = nowy.getName();
-        opis1.setText(s + " Leaves The Table");
+        playerLeave.setText(s + " Leaves The Table");
 
-        TextView opis2 = (TextView) findViewById(R.id.narka2);
+        TextView yourStack = (TextView) findViewById(R.id.line2);
         String s1 = Float.toString(nowy.getStack());
-        opis2.setText("Your Stack:" + s1);
-
-
-
-
-
-
-
+        yourStack.setText("Your Stack:" + s1);
 
     }
 
 
+//    public void exit(View view) {
+//// to wyjebac
+//        Intent intent = getIntent();
+//        intent.putExtra("backPOP", test2);
+//        setResult(RESULT_OK, intent);
+//        finish();
+//    }
 
-    public void powrotpop(View view) {
-// to wyjebac
-        Intent intent = getIntent();
-        intent.putExtra("backPOP", test2);
-        setResult(RESULT_OK, intent);
-        finish();
-    }
-
-    public void methOK(View view) {
+    public void okButton(View view) {
         finish();
     }
 }

@@ -31,11 +31,8 @@ public class Players extends RealmObject implements Parcelable {
         this.isSelected = isSelected;
         this.wins = 0;
 
-
-     //   reBuys(buyin);
         uniqID++;
         ID = uniqID;
-
 
     }
 

@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/butonpop2"
         android:text="OK"
-        android:onClick="powrotpop"/>
+        android:onClick="exit"/>
 
     <TextView
         android:layout_width="wrap_content"

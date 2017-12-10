@@ -15,7 +15,7 @@
         android:orientation="vertical">
 
     <TextView
-        android:id="@+id/narka1"
+        android:id="@+id/line1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Popup"
@@ -23,7 +23,7 @@
         android:layout_gravity="center_horizontal" />
 
     <TextView
-        android:id="@+id/narka2"
+        android:id="@+id/line2"
         android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="OK"
-        android:onClick="methOK"/>
+        android:onClick="okButton"/>
     </LinearLayout>
 
 </LinearLayout>
