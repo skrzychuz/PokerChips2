@@ -2,7 +2,6 @@ package com.szpon.pokerchips;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -18,11 +17,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Timer;
-
-/**
- * Created by KS on 2016-12-09.
- */
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
 
@@ -32,9 +26,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     private Context contex;
     private Refresh refresher;
     private boolean flag;
-    private Timer timer;
-    private Timer timerr;
-    final Handler mHandler = new Handler();
 
 
     public MyAdapter(ArrayList<Players> playerslist, Context c, Refresh refresher) {
@@ -129,7 +120,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 popup.show();
             }
         });
-
 
         holder.setItemClickListener(new ItemClickListener() {
             @Override
@@ -256,17 +246,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         }
 
         @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-        }
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {        }
 
         @Override
-        public void onTextChanged(final CharSequence s, int i, int i2, int i3) {
-
-            if (timerr != null) {
-                timerr.cancel();
-            }
-        }
+        public void onTextChanged(final CharSequence s, int i, int i2, int i3) {        }
 
         @Override
         public void afterTextChanged(final Editable e) {
