@@ -1,1 +1,1 @@
-An amateur version of the first application based on intuition and StackOverflow.
+An amateur version of the first application.
